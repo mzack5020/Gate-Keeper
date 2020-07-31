@@ -1,0 +1,21 @@
+<nav class="navbar navbar-dhs-blue p-0">
+    <a class="navbar-brand" routerLink="/">
+        <img src="./assets/navbar_logo.png" width="60" height="60" class="d-inline-block align-top" alt="">
+        <div class="navbar-brand-title">Gate Keeper</div>
+    </a>
+
+    <div class="nav-tabs m-none">
+        <div routerLink="/genPemCert" [ngClass]="{'active': activeTab === 'genPemCert'}">
+            <fa-icon [icon]="faKey"></fa-icon>&nbsp;
+            Generate PEM Cert
+        </div>
+        <div routerLink="/encrypt" [ngClass]="{'active': activeTab === 'encrypt'}">
+            <fa-icon [icon]="faLock"></fa-icon>&nbsp;
+            Encrypt
+        </div>
+        <div routerLink="/decrypt" [ngClass]="{'active': activeTab === 'decrypt'}">
+            <fa-icon [icon]="faLockOpen"></fa-icon>&nbsp;
+            Decrypt
+        </div>
+    </div>
+</nav>

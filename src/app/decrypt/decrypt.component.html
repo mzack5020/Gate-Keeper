@@ -1,0 +1,67 @@
+<app-navbar [activeTab]="'decrypt'"></app-navbar>
+<div class="section-wrapper">
+    <div class="row pt-4">
+        <div class="col-10 offset-1">
+            <div class="jumbotron jumbotron-fluid pl-2 pr-2">
+                <h1 class="display-4">Decrypt a File</h1>
+                <hr>
+                <div id="upload-form" class="pr-3 pl-3">
+                    <div class="form-group">
+                        <label for="encryptedFilename">Encrypted File</label>
+                        <div class="input-group mb-3" (click)="openDialog()">
+                            <input type="text" id="encryptedFilename" class="form-control hover-cursor"
+                                value="{{ encryptedFileLocation }}">
+                            <div class="input-group-append hover-cursor">
+                                <span class="input-group-text">Browse</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-right">
+                    <button class="btn btn-md btn-primary mr-3" (click)="retrievePin(retrievePinModal)"
+                        [disabled]="!isValid">
+                        <fa-icon [icon]="faSimCard"></fa-icon>&nbsp;
+                        Enter PIN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
+
+<ng-template #retrievePinModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="decrypt-modal-title">Retrieve Private Cert from PIV</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="pivPin">Enter PIN for PIV</label>
+            <div class="input-group mb-3">
+                <input #pivPin ngbAutoFocus type="password" id="pivPin" class="form-control"
+                    (keyup)="setPin(pivPin.value)" (keyup.enter)="decryptFile(pivPin.value)">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-md btn-secondary" [disabled]="isLoading" (click)="modal.dismiss()">
+            <fa-icon [icon]="faBan"></fa-icon>&nbsp;
+            Cancel
+        </button>
+        <button type="submit" class="btn btn-md btn-success" [disabled]="!pivPin.value || isLoading"
+            (click)="decryptFile(pivPin.value)">
+            <span *ngIf="!isLoading">
+                <fa-icon [icon]="faLockOpen"></fa-icon>&nbsp;
+                Decrypt File
+            </span>
+            <span *ngIf="isLoading">
+                <fa-icon [icon]="faCircleNotch" [spin]="true"></fa-icon>&nbsp;
+                Decrypting
+            </span>
+        </button>
+    </div>
+</ng-template>

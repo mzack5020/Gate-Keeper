@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+<div class="section-wrapper">
+    <div class="row pt-4">
+        <div class="col-10 offset-1">
+            <div class="jumbotron jumbotron-fluid text-center pl-2 pr-2">
+                <h1 class="display-4">Welcome to Gate Keeper!</h1>
+                <hr>
+                <p class="lead">Utilize the encrypt/decrypt tabs in the navigation bar above to secure or unlock secure files!</p>
+                <br/>
+                <a routerLink="/encrypt" class="btn btn-lg btn-success mr-3">
+                    <fa-icon [icon]="faLock"></fa-icon>&nbsp;
+                    Encrypt
+                </a>
+                <a routerLink="/decrypt" class="btn btn-lg btn-danger">
+                    <fa-icon [icon]="faLockOpen"></fa-icon>&nbsp;
+                    Decrypt
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

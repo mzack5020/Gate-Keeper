@@ -1,0 +1,54 @@
+$dhs-blue: rgb(0, 51, 102);
+
+nav {
+    position: fixed;
+    width: 100%;
+}
+
+.navbar-dhs-blue {
+    background-color: $dhs-blue;
+}
+
+.navbar-dhs-blue > a {
+    color: #FFF;
+}
+
+.navbar-brand {
+    padding: 10px;
+}
+
+.navbar-brand-title {
+    display: inline-block;
+    font-size: 24pt;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.nav-tabs {
+    float: right;
+    border: none;
+    margin-right: 10px;
+}
+
+.nav-tabs > div {
+    display: inline-block;
+    font-size: 16pt;
+    height: 75px;
+    color: #FFF;
+    padding: 15px;
+    padding-top: 22px;
+    vertical-align: middle;
+
+    transition: all .3s;
+}
+
+.nav-tabs > div:hover {
+    background-color: #FFF;
+    color: $dhs-blue;
+    cursor: pointer;
+}
+
+.nav-tabs > div.active {
+    background-color: #FFF;
+    color: $dhs-blue;
+}

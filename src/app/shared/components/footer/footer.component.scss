@@ -1,0 +1,15 @@
+$dhs-blue: rgb(0, 51, 102);
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 80px;
+    width: 100%;
+    background-color: $dhs-blue;
+}
+
+.footer-brand {
+    padding-top: 25px;
+    font-size: 14pt;
+}
