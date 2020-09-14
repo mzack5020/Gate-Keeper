@@ -5,7 +5,7 @@ import { PageNotFoundComponent } from './shared/components';
 import { HomeRoutingModule } from './home/home-routing.module';
 import { EncryptComponent } from './encrypt/encrypt.component';
 import { DecryptComponent } from './decrypt/decrypt.component';
-import { GenPemCertComponent } from './gen-pem-cert/gen-pem-cert.component';
+import { GenPubCertComponent } from './gen-pem-cert/gen-pub-cert.component';
 
 const routes: Routes = [
   {
@@ -14,8 +14,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'genPemCert',
-    component: GenPemCertComponent
+    path: 'genPubCert',
+    component: GenPubCertComponent
   },
   {
     path: 'encrypt',

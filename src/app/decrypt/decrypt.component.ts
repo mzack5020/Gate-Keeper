@@ -80,10 +80,11 @@ export class DecryptComponent {
   }
 
   decryptFile(): void {
+    this.isLoading = true;
+    this.cdRef.detectChanges();
+
     // Ensure Encrypted File Location Exists
     if (this.encryptedFileLocation && this.pivPin) {
-      this.isLoading = true;
-
       // Unzip
       try {
         const unzipCommand = `unzip -o "${this.encryptedFileLocation}" -d ${this.tmpDir}`;
@@ -115,9 +116,39 @@ export class DecryptComponent {
         return;
       }
 
+      // Discover Certificate ID from Label
+      let id;
+      try {
+        const discoverIdCommand = `/usr/local/bin/pkcs11-tool --type cert -O 2>/dev/null | egrep -A 2 "${AppConfig.pivLabel}$"|egrep "ID:"|awk '{print $2}'`;
+        id = childProcess.execSync(discoverIdCommand).toString();
+
+        if (!id) {
+          this.cleanUp();
+
+          console.error("There was an error finding the ID for your certificate. Please re-insert your PIV and try again.");
+          alert("There was an error finding the ID for your certificate. Please re-insert your PIV and try again.");
+
+          this.modalService.dismissAll();
+          this.isLoading = false;
+          this.cdRef.detectChanges();
+          return;
+        } 
+
+        console.log(`ID retrieved successfully: ${id}`);
+      } catch (e) {
+        this.cleanUp();
+
+        console.error(`There was an error discovering ID for ceritificate label ${AppConfig.pivLabel} with message: \r\n\r\n${e}`);
+        alert(`There was an error discovering ID for ceritificate label ${AppConfig.pivLabel} with message: \r\n\r\n${e}`);
+        this.modalService.dismissAll();
+        this.isLoading = false;
+        this.cdRef.detectChanges();
+        return;
+      }
+
       // Decrypt Key Using Private
       // Use PIN to decrypt file
-      const decryptCommand = `/usr/local/bin/pkcs11-tool --decrypt --label "${AppConfig.pivLabel}" -m RSA-PKCS --module /usr/local/lib/opensc-pkcs11.so -p ${this.pivPin} --input-file ${this.tmpEncKeyFilename} --output-file ${this.tmpKeyFilename}`;
+      const decryptCommand = `/usr/local/bin/pkcs11-tool --decrypt --id ${id.trim()} -m RSA-PKCS --module /usr/local/lib/opensc-pkcs11.so -p ${this.pivPin} --input-file ${this.tmpEncKeyFilename} --output-file ${this.tmpKeyFilename}`;
       childProcess.exec(decryptCommand, (err, _, __) => {
         if (err) {
           this.cleanUp();
@@ -137,7 +168,7 @@ export class DecryptComponent {
         console.log(`File Exists: ${fs.existsSync(this.tmpFilename)}`);
 
         // Decrypt File Using Key
-        const decryptFileCommand = `/usr/bin/openssl enc -d -aes-256-cbc -in ${this.tmpFilename} -out "${this.tmpDecryptedFilename}" -pass file:${this.tmpKeyFilename}`;        
+        const decryptFileCommand = `/usr/bin/openssl enc -d -aes-256-cbc -in ${this.tmpFilename} -out "${this.tmpDecryptedFilename}" -pass file:${this.tmpKeyFilename}`;
         console.log(decryptFileCommand);
         childProcess.exec(decryptFileCommand, (err, stdout, stderr) => {
 

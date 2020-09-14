@@ -11,11 +11,11 @@ import * as os from 'os';                      // Used to interact with operatin
 import * as path from 'path';                  // Used to get os specific path delimiters
 
 @Component({
-  selector: 'app-gen-pem-cert',
-  templateUrl: './gen-pem-cert.component.html',
-  styleUrls: ['./gen-pem-cert.component.scss']
+  selector: 'app-gen-pub-cert',
+  templateUrl: './gen-pub-cert.component.html',
+  styleUrls: ['./gen-pub-cert.component.scss']
 })
-export class GenPemCertComponent {
+export class GenPubCertComponent {
 
   isLoading = false;
 
@@ -33,7 +33,7 @@ export class GenPemCertComponent {
     private electron: ElectronService
   ) { }
 
-  genPemFile(): void {
+  genPubFile(): void {
     this.isLoading = true;
     this.cdRef.detectChanges();
 
@@ -74,8 +74,8 @@ export class GenPemCertComponent {
         if (valid) {
           const generatedFilename = subjectName.trim();
           const tmpFilename = `${this.tmpDir}${path.delimiter}${generatedFilename}`;
-          const genPemCommand = `/usr/local/bin/pkcs11-tool -r --type cert --label "${AppConfig.pivLabel}" | /usr/bin/openssl x509 -inform DER -pubkey > ${tmpFilename}`;
-          childProcess.exec(genPemCommand, (error, stdout, stderr) => {
+          const genPubCommand = `/usr/local/bin/pkcs11-tool -r --type cert --label "${AppConfig.pivLabel}" | /usr/bin/openssl x509 -inform der -pubkey -outform pem > ${tmpFilename}`;
+          childProcess.exec(genPubCommand, (error, stdout, stderr) => {
             if (error) {
               // Delete Tmp File (if created/exists)'
               if (fs.existsSync(`${tmpFilename}`)) {
@@ -90,14 +90,14 @@ export class GenPemCertComponent {
               this.cdRef.detectChanges();
             } else {
               this.electron.remote.dialog.showSaveDialog({
-                buttonLabel: 'Save PEM File',
+                buttonLabel: 'Save Public Cert',
                 filters: [{
-                  name: 'PEM',
-                  extensions: ['pem']
+                  name: 'CER',
+                  extensions: ['cer']
                 }],
                 defaultPath: generatedFilename,
-                nameFieldLabel: 'PEM Filename',
-                title: "Select Location for New PEM File"
+                nameFieldLabel: 'Public Cert Filename',
+                title: "Select Location for New Public Cert"
               }).then((result) => {
                 if (!result.canceled && result.filePath !== '') {
                   console.log("TMP FILENAME: ", tmpFilename);
@@ -107,7 +107,7 @@ export class GenPemCertComponent {
                   fs.renameSync(`${tmpFilename}`, result.filePath);
 
                   // Alert user that the operation completed successfully
-                  alert(`PEM creation successful! File located at ${result.filePath}`);
+                  alert(`Public certificate creation successful! File located at ${result.filePath}`);
                 } else {
                   console.log("User canceled save dialog");
                 }

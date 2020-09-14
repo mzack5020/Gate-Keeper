@@ -53,7 +53,7 @@
             Cancel
         </button>
         <button type="submit" class="btn btn-md btn-success" [disabled]="!pivPin.value || isLoading"
-            (click)="decryptFile(pivPin.value)">
+            (click)="decryptFile()">
             <span *ngIf="!isLoading">
                 <fa-icon [icon]="faLockOpen"></fa-icon>&nbsp;
                 Decrypt File

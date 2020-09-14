@@ -1,17 +1,17 @@
-<app-navbar [activeTab]="'genPemCert'"></app-navbar>
+<app-navbar [activeTab]="'genPubCert'"></app-navbar>
 <div class="section-wrapper">
     <div class="row pt-4">
         <div class="col-10 offset-1">
             <div class="jumbotron jumbotron-fluid pl-2 pr-2">
-                <h1 class="display-4">Generate Your PEM Cert</h1>
+                <h1 class="display-4">Generate Your Public Cert</h1>
                 <hr>
-                Click the green "Generate" button to create your PEM certification from your PIV.
+                Click the green "Generate" button to create your public certificate from your PIV.
                 <hr>
                 <div class="text-right">
-                    <button class="btn btn-md btn-success mr-3" (click)="genPemFile()" [disabled]="isLoading">
+                    <button class="btn btn-md btn-success mr-3" (click)="genPubFile()" [disabled]="isLoading">
                         <span *ngIf="!isLoading">
                             <fa-icon [icon]="faCogs"></fa-icon>&nbsp;
-                            Generate PEM
+                            Generate Public Cert
                         </span>
                         <span *ngIf="isLoading">
                             <fa-icon [icon]="faCircleNotch" [spin]="true"></fa-icon>&nbsp;

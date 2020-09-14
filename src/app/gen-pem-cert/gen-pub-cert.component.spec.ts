@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenPemCertComponent } from './gen-pem-cert.component';
+import { GenPubCertComponent } from './gen-pub-cert.component';
 
 describe('GenPemCertComponent', () => {
-  let component: GenPemCertComponent;
-  let fixture: ComponentFixture<GenPemCertComponent>;
+  let component: GenPubCertComponent;
+  let fixture: ComponentFixture<GenPubCertComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenPemCertComponent ]
+      declarations: [ GenPubCertComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GenPemCertComponent);
+    fixture = TestBed.createComponent(GenPubCertComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

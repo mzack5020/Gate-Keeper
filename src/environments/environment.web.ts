@@ -6,5 +6,5 @@
 export const AppConfig = {
   production: false,
   environment: 'DEV',
-  pivLabel: 'Certificate for PIV Authentication'
+  pivLabel: 'Certificate for Key Management'
 };

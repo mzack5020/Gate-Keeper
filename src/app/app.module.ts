@@ -19,7 +19,7 @@ import { HomeModule } from './home/home.module';
 import { AppComponent } from './app.component';
 import { EncryptComponent } from './encrypt/encrypt.component';
 import { DecryptComponent } from './decrypt/decrypt.component';
-import { GenPemCertComponent } from './gen-pem-cert/gen-pem-cert.component';
+import { GenPubCertComponent } from './gen-pem-cert/gen-pub-cert.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -27,7 +27,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent, EncryptComponent, DecryptComponent, GenPemCertComponent],
+  declarations: [AppComponent, EncryptComponent, DecryptComponent, GenPubCertComponent],
   imports: [
     BrowserModule,
     FormsModule,

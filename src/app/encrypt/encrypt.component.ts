@@ -38,7 +38,7 @@ export class EncryptComponent {
   private tmpFilename = `${this.tmpDir}/${this.filename}`;
 
   // Commands
-  private genTokenCommand = `/usr/bin/openssl rand -hex 122 -out ${this.tmpKeyFilename}`;
+  private genTokenCommand = `/usr/bin/openssl rand -out "${this.tmpKeyFilename}" -hex 122`;
 
   constructor(private cdRef: ChangeDetectorRef, private electron: ElectronService) { }
 
@@ -74,6 +74,8 @@ export class EncryptComponent {
 
   encryptFile(): void {
     this.isLoading = true;
+
+    console.log(this.genTokenCommand);
 
     // Gen Random Key for Encryption
     childProcess.execSync(this.genTokenCommand);
@@ -118,7 +120,7 @@ export class EncryptComponent {
       buttonLabel: inputKey == 'pubKey' ? 'Select Recipient\'s Public Cert' : 'Select Unencrpyted File',
       filters: [{
         name: inputKey == 'pubKey' ? 'Public Cert' : 'Unencrypted File',
-        extensions: inputKey == 'pubKey' ? ['pem'] : ['*']
+        extensions: inputKey == 'pubKey' ? ['cer'] : ['*']
       }]
     }).then((result) => {
       if (!result.canceled && result.filePaths.length == 1) {
@@ -143,7 +145,8 @@ export class EncryptComponent {
     // Encrypt Key 
     // if (fs.existsSync(this.tmpKeyFilename) && fs.existsSync(this.pubKeyLocation)) {
     if (fs.existsSync(this.tmpKeyFilename) && fs.existsSync(this.pubKeyLocation)) {
-      const encryptKeyCommand = `/usr/bin/openssl rsautl -encrypt -inkey "${this.pubKeyLocation}" -pubin -in ${this.tmpKeyFilename} -out ${this.tmpEncKeyFilename}`;
+      const encryptKeyCommand = `/usr/bin/openssl rsautl -encrypt -inkey "${this.pubKeyLocation}" -in ${this.tmpKeyFilename} -pubin -out ${this.tmpEncKeyFilename}`;
+
       childProcess.exec(encryptKeyCommand, (err, _, stderr) => {
         if (err || stderr) {
           this.cleanUp();
